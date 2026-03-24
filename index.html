@@ -172,6 +172,941 @@
         .seal { height: 55px; max-width: 200px; display: flex; align-items: flex-start; justify-content: flex-end; flex-shrink: 0; gap: 8px; } 
         .seal img { max-height: 100%; max-width: 100%; width: auto; height: auto; object-fit: contain; }
         
+        /* ADAPTACIÓN DE TABLA DINÁMICA DE PRECIOS */
+        .matrix { display: grid; grid-template-columns: 120px repeat(var(--col-count, 3), 1fr); gap: 4px; margin-bottom: 8px; font-family: Arial, sans-serif; width: 100%; flex-shrink: 0; transition: margin-top 0.2s ease-out; position: relative; z-index: 10; }
+        .m-lbl { font-weight: 700; font-size: 13px; padding-top: 15px; white-space: nowrap; overflow: hidden; } 
+        .m-cap { text-align: center; font-weight: 700; font-size: 16px; padding-top: 15px; white-space: nowrap; overflow: hidden; text-overflow: clip; width: 100%; }
+        
+        .box-lbl { color: white; padding: 6px 0 6px 8px; font-size: 12px; border-radius: 4px 0 0 4px; display: flex; align-items: center; white-space: nowrap; overflow: hidden; }
+        .box-val { display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; color: black; background: #f4f4f4; width: 100%; white-space: nowrap; overflow: hidden; }
+        .c-norm { background: var(--header-dark); } .c-12 { background: var(--blue-12); font-size: 10px; line-height: 1.1; } .c-24 { background: var(--green-24); color: black; font-size: 10px; line-height: 1.1; }
+
+        .plans-wrapper { flex-grow: 1; flex-shrink: 1; min-height: 0; display: flex; align-items: center; justify-content: center; overflow: visible; margin-bottom: 100px; position: relative; z-index: 50; transition: margin-top 0.1s linear; }
+        .plans-container { width: 100%; font-family: Arial, sans-serif; transform-origin: center center; }
+        .pc-title { text-align: center; font-size: 16px; font-weight: 400; margin-bottom: 15px; color: #000; }
+        .pc-grid { display: flex; justify-content: center; gap: 15px; text-align: center; }
+        .pc-col { display: flex; flex-direction: column; align-items: center; flex: 1; max-width: 120px; }
+        .pc-logo-img { height: 30px; width: auto; margin-bottom: 5px; object-fit: contain; }
+        .pc-dev-price { font-size: 20px; color: var(--entel-orange); font-weight: 700; line-height: 1.2; white-space: nowrap; }
+        .pc-label { font-size: 11px; color: #000; margin: 2px 0; }
+        .pc-pln-price { font-size: 16px; color: #000; font-weight: 700; white-space: nowrap; }
+
+        .entel-simple { border: 1px solid #000; padding: 6px; margin-bottom: 10px; width: 100%; flex-shrink: 0; }
+        .en-tit { text-align: center; font-weight: 700; font-size: 12px; margin-bottom: 4px; font-family: Arial; }
+        .en-flex { display: flex; gap: 10px; align-items: center; }
+        .en-logo { font-size: 28px; font-weight: 900; color: var(--entel-blue); margin-right: 5px; flex-shrink: 0; } .en-logo span { color: var(--entel-orange); margin-left: -2px; }
+        .en-grid { flex: 1; display: grid; grid-template-columns: repeat(4, 1fr); text-align: center; gap: 2px; }
+        .en-p { color: var(--entel-orange); font-weight: 800; font-size: 13px; white-space: nowrap; } .en-t { font-size: 8px; font-weight: 700; } .en-s { font-size: 7px; color: #444; }
+
+        .foot { display: flex; justify-content: space-between; align-items: flex-start; height: 80px; width: 100%; padding-top: 5px; border-top: 1px solid #eee; overflow: hidden; flex-shrink: 0; margin-top: auto; position: relative; z-index: 100; background: white; }
+        .clrs { display: flex; align-items: flex-start; gap: 15px; flex: 1; margin-right: 20px; }
+        .cl-lbl { font-size: 16px; font-weight: 500; flex-shrink: 0; margin-top: 4px; } 
+        .imgs-group { display: flex; align-items: center; gap: 20px; flex-shrink: 0; width: 180px; height: 70px; justify-content: flex-end; }
+        .ac-img, .terms-img { height: 100%; width: auto; object-fit: contain; }
+        
+        /* REGLAS ESPECIFICAS (H, V, CH, CV, HS) */
+        /* H */
+        #h.active .foot { height: 100px; padding-top: 5px; position: absolute; bottom: 0; left: 0; right: 0; margin: 0; background: white; z-index: 100; display: flex; align-items: center; justify-content: flex-end; border-top: 1px solid #eee; }
+        #h.active .product-wrap { padding-bottom: 100px; display: block; }
+        #h.active .clrs { position: absolute; top: 10px; left: 0; display: flex; flex-direction: column; gap: 5px; width: 140px; }
+        #h.active .cl-lbl { margin: 0; font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+        #h.active .dots { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; width: 100%; }
+        #h.active .dot { aspect-ratio: 1/1; border-radius: 50%; border: 2px solid #ccc; }
+        #h.active .imgs-group { flex-grow: 1; display: flex; justify-content: flex-end; align-items: center; gap: 30px; height: 100%; margin-left: 150px; }
+        #h.active .ac-col { height: 95%; display: flex; align-items: center; }
+        #h.active .terms-col { height: 80%; display: flex; align-items: center; }
+        #h.active .ac-img, #h.active .terms-img { height: 100%; width: auto; max-width: 100%; object-fit: contain; }
+
+        /* V */
+        #v.active .foot { height: 100px; padding-top: 5px; position: absolute; bottom: 0; left: 0; right: 0; margin: 0; background: white; z-index: 100; display: flex; align-items: center; justify-content: flex-end; border-top: 1px solid #eee; }
+        #v.active .product-wrap { padding-bottom: 100px; display: block; }
+        #v.active .clrs { position: absolute; top: 10px; left: 0; display: flex; flex-direction: column; gap: 5px; width: 110px; }
+        #v.active .cl-lbl { margin: 0; font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+        #v.active .dots { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; width: 100%; }
+        #v.active .dot { aspect-ratio: 1/1; border-radius: 50%; border: 2px solid #ccc; }
+        #v.active .imgs-group { flex-grow: 1; display: flex; justify-content: flex-end; align-items: center; gap: 15px; height: 100%; margin-left: 115px; }
+        #v.active .ac-col { height: 95%; display: flex; align-items: center; }
+        #v.active .terms-col { height: 80%; display: flex; align-items: center; }
+        #v.active .ac-img, #v.active .terms-img { height: 100%; width: auto; max-width: 100%; object-fit: contain; }
+
+        /* CH */
+        #ch.active .split-col { padding-bottom: 90px; }
+        #ch.active .brand { max-width: calc(100% - 160px); } 
+        #ch.active .seal { height: 35px; max-width: 150px; } 
+        #ch.active .logo { font-size: 16px; letter-spacing: 1px; } 
+        #ch.active .p-name { font-size: 24px; } 
+        #ch.active .matrix { grid-template-columns: 50px repeat(var(--col-count, 3), 1fr); gap: 3px; }
+        #ch.active .box-lbl { font-size: 9px; padding: 0 2px; text-align: center; justify-content: center; height: 100%; }
+        #ch.active .m-lbl { font-size: 11px; } #ch.active .m-cap { font-size: 14px; }
+        #ch.active .box-val { font-size: 16px; font-weight: 800; padding: 5px 0; }
+        #ch.active .foot { height: 90px; padding-top: 5px; position: absolute; bottom: 0; left: 0; right: 0; margin: 0; background: white; z-index: 100; display: flex; align-items: center; justify-content: flex-end; border-top: 1px solid #eee; }
+        #ch.active .clrs { position: absolute; top: 10px; left: 0; display: flex; flex-direction: column; gap: 3px; width: 70px; }
+        #ch.active .cl-lbl { margin: 0; font-size: 11px; font-weight: 600; }
+        #ch.active .dots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; width: 100%; }
+        #ch.active .dot { width: 14px !important; height: 14px !important; border-radius: 50%; border: 1px solid #999; }
+        #ch.active .imgs-group { flex-grow: 1; display: flex; justify-content: flex-end; align-items: center; gap: 8px; height: 100%; margin-left: 75px; }
+        #ch.active .ac-col { height: 90%; display: flex; align-items: center; }
+        #ch.active .terms-col { height: 75%; display: flex; align-items: center; }
+        #ch.active .ac-img, #ch.active .terms-img { height: 100%; width: auto; max-width: 100%; object-fit: contain; }
+        #ch.active .plans-wrapper { margin-bottom: 90px; margin-top: 10px; flex-grow: 0; display: block; }
+        #ch.active .pc-title { font-size: 12px; margin-bottom: 5px; }
+        #ch.active .pc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; } 
+        #ch.active .pc-col { max-width: none; padding: 0 2px; }
+        #ch.active .pc-dev-price { font-size: 14px; line-height: 1.1; }
+        #ch.active .pc-pln-price { font-size: 12px; }
+        #ch.active .pc-logo-img { height: 15px; margin-bottom: 2px; }
+        #ch.active .pc-label { font-size: 9px; margin: 1px 0; }
+
+        /* CV */
+        #cv.active .split-row { padding-bottom: 60px; } 
+        #cv.active .brand { max-width: calc(100% - 160px); } 
+        #cv.active .seal { height: 35px; max-width: 150px; }
+        #cv.active .logo { font-size: 16px; letter-spacing: 1px; } 
+        #cv.active .head { height: 40px; margin-bottom: 2px; }
+        #cv.active .p-name { font-size: 28px; }
+        #cv.active .matrix { margin-bottom: 2px; gap: 2px; grid-template-columns: 75px repeat(var(--col-count, 3), 1fr); }
+        #cv.active .m-lbl { padding-top: 10px; font-size: 11px; }
+        #cv.active .m-cap { padding-top: 10px; font-size: 14px; }
+        #cv.active .box-lbl { font-size: 10px; padding: 4px; }
+        #cv.active .box-val { font-size: 14px; height: 26px; }
+        #cv.active .foot { height: 60px; padding-top: 4px; position: absolute; bottom: 0; left: 0; right: 0; margin: 0; background: white; z-index: 100; display: flex; align-items: center; justify-content: flex-end; border-top: 1px solid #eee; }
+        #cv.active .clrs { position: absolute; top: 5px; left: 0; display: flex; flex-direction: column; gap: 2px; width: 80px; }
+        #cv.active .cl-lbl { margin: 0; font-size: 10px; font-weight: 600; margin-bottom: 1px; }
+        #cv.active .dots { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; width: 100%; }
+        #cv.active .dot { width: 14px !important; height: 14px !important; border-width: 1px; } 
+        #cv.active .imgs-group { flex-grow: 1; display: flex; justify-content: flex-end; align-items: center; gap: 10px; height: 100%; margin-left: 85px; }
+        #cv.active .ac-col { height: 90%; display: flex; align-items: center; }
+        #cv.active .terms-col { height: 70%; display: flex; align-items: center; }
+        #cv.active .ac-img, #cv.active .terms-img { height: 100%; width: auto; max-width: 100%; object-fit: contain; }
+        
+        /* HS */
+        #hs.active .product-wrap { padding-bottom: 0 !important; display: flex; flex-direction: column; justify-content: flex-start; }
+        #hs.active .head { height: 35px; flex: 0 0 auto; margin-bottom: 5px; }
+        #hs.active .p-name { font-size: 24px; }
+        #hs.active .logo { font-size: 18px; }
+        #hs.active .seal { height: 35px; max-width: 150px;}
+        #hs.active .brand { max-width: calc(100% - 160px); }
+        #hs.active .matrix { gap: 2px; margin-top: auto; margin-bottom: auto; flex: 1; display: grid; align-content: center; transform: translateY(0); }
+        #hs.active .m-lbl { padding-top: 5px; font-size: 11px; }
+        #hs.active .m-cap { padding-top: 5px; font-size: 13px; }
+        #hs.active .box-lbl { font-size: 10px; padding: 2px 0 2px 5px; }
+        #hs.active .box-val { font-size: 15px; height: 26px; }
+        #hs.active .foot { display: none !important; }
+        #hs.active .clrs { display: none !important; }
+
+        /* --- AJUSTES PARA ESPECIFICACIONES (REDUCIR SATURACIÓN Y JERARQUÍA) --- */
+        .spec-lbl { font-size: 10.5px !important; padding: 4px 0 4px 6px !important; font-weight: 600 !important; }
+        .spec-val { font-size: 13.5px !important; font-weight: 500 !important; background: #f9f9f9 !important; color: #333 !important; }
+        
+        #ch.active .spec-lbl { font-size: 8px !important; padding: 2px !important; }
+        #ch.active .spec-val { font-size: 11px !important; padding: 2px 0 !important; font-weight: 500 !important; }
+        
+        #cv.active .spec-lbl { font-size: 9px !important; padding: 3px !important; }
+        #cv.active .spec-val { font-size: 12px !important; height: 22px !important; font-weight: 500 !important; }
+        
+        #hs.active .spec-lbl { font-size: 9px !important; padding: 2px 0 2px 5px !important; }
+        #hs.active .spec-val { font-size: 12px !important; height: 22px !important; font-weight: 500 !important; }
+
+        /* --- ESTILOS DE IMPRESIÓN MEJORADOS --- */
+        @media print { 
+            #login-screen, .sidebar { display: none !important; } 
+            .workspace { 
+                display: block; 
+                padding: 0; 
+                background: white; 
+                width: auto;
+                height: auto;
+                overflow: visible;
+            } 
+            .ticket { box-shadow: none; margin: 0; } 
+            
+            .ticket.active {
+                position: absolute;
+                top: 0;
+                left: 0;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .ticket:not(.active) { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="login-screen">
+        <div class="login-bg-title">
+            <span>AUFBAU</span>
+            <div class="vertical-separator"></div>
+            <div class="apr-lockup-stacked">
+                <span class="apple-icon"></span>
+                <span class="apr-text-line">Premium</span>
+                <span class="apr-text-line">Reseller</span>
+            </div>
+        </div>
+        
+        <script>
+            const particles = [];
+            const numParticles = 7; 
+            const screen = document.getElementById('login-screen');
+
+            function createParticles() {
+                for(let i=0; i<numParticles; i++) {
+                    let p = document.createElement('div');
+                    p.className = 'particle';
+                    let size = Math.random() * 50 + 30; 
+                    p.style.width = size + 'px';
+                    p.style.height = size + 'px';
+                    screen.appendChild(p);
+
+                    particles.push({
+                        element: p,
+                        x: Math.random() * (window.innerWidth - size), 
+                        y: Math.random() * (window.innerHeight - size), 
+                        vx: (Math.random() - 0.5) * 3, 
+                        vy: (Math.random() - 0.5) * 3,
+                        size: size,
+                        mass: size 
+                    });
+                }
+                animateParticles();
+            }
+
+            function animateParticles() {
+                particles.forEach(p => {
+                    p.x += p.vx; p.y += p.vy;
+                    if (p.x <= 0) { p.x = 0; p.vx *= -1; }
+                    if (p.x + p.size >= window.innerWidth) { p.x = window.innerWidth - p.size; p.vx *= -1; }
+                    if (p.y <= 0) { p.y = 0; p.vy *= -1; }
+                    if (p.y + p.size >= window.innerHeight) { p.y = window.innerHeight - p.size; p.vy *= -1; }
+                });
+
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const p1 = particles[i]; const p2 = particles[j];
+                        const c1x = p1.x + p1.size / 2; const c1y = p1.y + p1.size / 2;
+                        const c2x = p2.x + p2.size / 2; const c2y = p2.y + p2.size / 2;
+                        const dx = c2x - c1x; const dy = c2y - c1y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        const minDist = p1.size / 2 + p2.size / 2;
+
+                        if (distance < minDist) {
+                            const angle = Math.atan2(dy, dx);
+                            const overlap = minDist - distance;
+                            const moveX = Math.cos(angle) * overlap * 0.5;
+                            const moveY = Math.sin(angle) * overlap * 0.5;
+                            p1.x -= moveX; p1.y -= moveY; p2.x += moveX; p2.y += moveY;
+
+                            const nx = dx / distance; const ny = dy / distance;
+                            const tx = -ny; const ty = nx;
+                            const dpTan1 = p1.vx * tx + p1.vy * ty; const dpTan2 = p2.vx * tx + p2.vy * ty;
+                            const dpNorm1 = p1.vx * nx + p1.vy * ny; const dpNorm2 = p2.vx * nx + p2.vy * ny;
+                            const m1 = p1.mass; const m2 = p2.mass;
+                            const m1_eff = (dpNorm1 * (m1 - m2) + 2 * m2 * dpNorm2) / (m1 + m2);
+                            const m2_eff = (dpNorm2 * (m2 - m1) + 2 * m1 * dpNorm1) / (m1 + m2);
+                            p1.vx = tx * dpTan1 + nx * m1_eff; p1.vy = ty * dpTan1 + ny * m1_eff;
+                            p2.vx = tx * dpTan2 + nx * m2_eff; p2.vy = ty * dpTan2 + ny * m2_eff;
+                        }
+                    }
+                }
+                particles.forEach(p => { p.element.style.transform = `translate(${p.x}px, ${p.y}px)`; });
+                requestAnimationFrame(animateParticles);
+            }
+            window.addEventListener('resize', () => { particles.forEach(p => { p.x = Math.min(p.x, window.innerWidth - p.size); p.y = Math.min(p.y, window.innerHeight - p.size); }); });
+            setTimeout(createParticles, 100);
+        </script>
+
+        <div class="login-bg-circle"></div>
+
+        <div class="login-card">
+            <h2 style="margin:0;">Generador de Price Tickets</h2>
+            <div style="font-weight:bold; font-size:14px; margin-top:5px;">Apple Premium Reseller</div>
+            <input type="password" id="pin" class="pin-input" placeholder="••••">
+            <button class="btn-login" onclick="login()">Entrar</button>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2 style="margin:0;">Aufbau 2026</h2>
+            <button class="btn-logout" onclick="logout()">🔒 Salir / Inicio</button>
+        </div>
+        
+        <div class="db-controls" id="admin-controls">
+            <label style="font-size:10px; color:#e65100; font-weight:bold;">Panel Administrador</label>
+            <button class="btn-sync" onclick="loadFromGoogleSheets()">☁️ Sincronizar Google Sheets (Directo)</button>
+            <div id="sync-msg" class="sync-msg">Conectando con Google...</div>
+            <button class="btn-delete-db" id="btn-delete" onclick="removeDB()">🗑️ Eliminar Datos</button>
+        </div>
+        
+        <div id="db-status" class="db-status">Estado: No hay datos cargados</div>
+
+        <div class="grid-fmt" style="margin-top:10px;">
+            <div class="btn-fmt active" onclick="setFormat('h', this)">Horizontal (1)</div>
+            <div class="btn-fmt" onclick="setFormat('ch', this)">Combinado H (2)</div>
+            <div class="btn-fmt" onclick="setFormat('v', this)">Vertical (1)</div>
+            <div class="btn-fmt" onclick="setFormat('cv', this)">Comb. V (2)</div>
+            <div class="btn-fmt" onclick="setFormat('hs', this)">Horizontal Peq (3)</div>
+        </div>
+        
+        <button class="btn-print" onclick="window.print()">🖨️ Imprimir Formato Actual</button>
+
+        <div class="tabs" id="prod-tabs"><button class="tab active" onclick="setTab(1, this)">Producto 1</button><button class="tab" onclick="setTab(2, this)">Producto 2</button></div>
+        
+        <div class="box">
+            <label>Nombre del Producto</label>
+            <select id="inp-name" onchange="onNameInput(this)">
+                <option value="" disabled selected>Cargue Planilla...</option>
+            </select>
+            
+            <div style="height:10px;"></div>
+            <div class="row"><div class="col"><input type="text" id="c1" class="locked-input" readonly></div><div class="col"><input type="tel" id="p1" class="locked-input" readonly placeholder="$"></div></div>
+            <div class="row"><div class="col"><input type="text" id="c2" class="locked-input" readonly></div><div class="col"><input type="tel" id="p2" class="locked-input" readonly placeholder="$"></div></div>
+            <div class="row"><div class="col"><input type="text" id="c3" class="locked-input" readonly></div><div class="col"><input type="tel" id="p3" class="locked-input" readonly placeholder="$"></div></div>
+        </div>
+        
+        <div class="box" id="matrix-slider-box" style="background:#e8f5e9; border-color:#a5d6a7; display:none;">
+            <label id="matrix-slider-lbl" style="color:#2e7d32; margin-bottom:5px;">Ajuste Vertical Tabla Precios</label>
+            <input type="range" id="rng-matrix-y" min="-40" max="60" value="0" oninput="changeMatrixY(this.value)">
+        </div>
+        
+        <div class="box" id="hs-controls" style="display:none; background:#fff3e0; border-color:#ffb74d;">
+            <label style="color:#ef6c00; margin-bottom:5px; font-size:10px; font-weight:bold;">Ajustes Formato Pequeño</label>
+            <label>Posición Vertical Precios</label>
+            <input type="range" id="rng-matrix-hs" min="-50" max="50" value="0" oninput="changeMatrixPosHS(this.value)">
+        </div>
+
+        <div class="box" id="entel-simple-box" style="background:#fff8e1; border-color:#ffcc80;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;"><label style="color:#ff7900; margin:0;">Entel (Simple)</label><label style="font-size:10px;"><input type="checkbox" id="chk-ent" onchange="toggleEnt()" checked style="width:auto;"> Mostrar</label></div>
+            <div class="row"><input type="text" id="e1" oninput="saveAndRender()"> <input type="text" id="e2" oninput="saveAndRender()"></div><div class="row"><input type="text" id="e3" oninput="saveAndRender()"> <input type="text" id="e4" oninput="saveAndRender()"></div>
+        </div>
+
+        <div class="box plans-settings" id="plans-box" style="background:#e3f2fd; border-color:#90caf9;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;"><label style="color:#0033a0; margin:0; font-size:11px;">Configuración de Planes</label><label style="font-size:10px;"><input type="checkbox" id="chk-plans-main" onchange="toggleEnt()" checked style="width:auto;"> Activar Sección</label></div>
+            
+            <div class="ps-group"><div class="ps-header"><div class="ps-title">Plan 1</div><label class="ps-chk-lbl"><input type="checkbox" id="ps-p1-show" checked onchange="savePlans()"> Mostrar</label></div><div class="carrier-select-group"><label class="radio-img"><input type="radio" name="p1-carrier" value="entel" checked onchange="savePlans(this)"><img src="logoentel.png"></label><label class="radio-img"><input type="radio" name="p1-carrier" value="claro" onchange="savePlans(this)"><img src="logoclaro.png"></label><label class="radio-img"><input type="radio" name="p1-carrier" value="wom" onchange="savePlans(this)"><img src="logowom.png"></label><label class="radio-img"><input type="radio" name="p1-carrier" value="movistar" onchange="savePlans(this)"><img src="logomovistar.png"></label></div><input type="text" id="ps-p1-dev" placeholder="$ Equipo" oninput="savePlans()" style="margin-bottom:4px;"><input type="text" id="ps-p1-pln" placeholder="$ Plan" oninput="savePlans()"></div>
+            <div class="ps-group"><div class="ps-header"><div class="ps-title">Plan 2</div><label class="ps-chk-lbl"><input type="checkbox" id="ps-p2-show" checked onchange="savePlans()"> Mostrar</label></div><div class="carrier-select-group"><label class="radio-img"><input type="radio" name="p2-carrier" value="entel" checked onchange="savePlans(this)"><img src="logoentel.png"></label><label class="radio-img"><input type="radio" name="p2-carrier" value="claro" onchange="savePlans(this)"><img src="logoclaro.png"></label><label class="radio-img"><input type="radio" name="p2-carrier" value="wom" onchange="savePlans(this)"><img src="logowom.png"></label><label class="radio-img"><input type="radio" name="p2-carrier" value="movistar" onchange="savePlans(this)"><img src="logomovistar.png"></label></div><input type="text" id="ps-p2-dev" placeholder="$ Equipo" oninput="savePlans()" style="margin-bottom:4px;"><input type="text" id="ps-p2-pln" placeholder="$ Plan" oninput="savePlans()"></div>
+            
+            <div id="plan-3-group" class="ps-group"><div class="ps-header"><div class="ps-title">Plan 3</div><label class="ps-chk-lbl"><input type="checkbox" id="ps-p3-show" checked onchange="savePlans()"> Mostrar</label></div><div class="carrier-select-group"><label class="radio-img"><input type="radio" name="p3-carrier" value="entel" checked onchange="savePlans(this)"><img src="logoentel.png"></label><label class="radio-img"><input type="radio" name="p3-carrier" value="claro" onchange="savePlans(this)"><img src="logoclaro.png"></label><label class="radio-img"><input type="radio" name="p3-carrier" value="wom" onchange="savePlans(this)"><img src="logowom.png"></label><label class="radio-img"><input type="radio" name="p3-carrier" value="movistar" onchange="savePlans(this)"><img src="logomovistar.png"></label></div><input type="text" id="ps-p3-dev" placeholder="$ Equipo" oninput="savePlans()" style="margin-bottom:4px;"><input type="text" id="ps-p3-pln" placeholder="$ Plan" oninput="savePlans()"></div>
+            <div id="plan-4-group" class="ps-group" style="border:none;"><div class="ps-header"><div class="ps-title">Plan 4</div><label class="ps-chk-lbl"><input type="checkbox" id="ps-p4-show" checked onchange="savePlans()"> Mostrar</label></div><div class="carrier-select-group"><label class="radio-img"><input type="radio" name="p4-carrier" value="entel" checked onchange="savePlans(this)"><img src="logoentel.png"></label><label class="radio-img"><input type="radio" name="p4-carrier" value="claro" onchange="savePlans(this)"><img src="logoclaro.png"></label><label class="radio-img"><input type="radio" name="p4-carrier" value="wom" onchange="savePlans(this)"><img src="logowom.png"></label><label class="radio-img"><input type="radio" name="p4-carrier" value="movistar" onchange="savePlans(this)"><img src="logomovistar.png"></label></div><input type="text" id="ps-p4-dev" placeholder="$ Equipo" oninput="savePlans()" style="margin-bottom:4px;"><input type="text" id="ps-p4-pln" placeholder="$ Plan" oninput="savePlans()"></div>
+            
+            <div style="margin-top:5px; border-top:1px solid #fff; padding-top:10px;"><label style="font-size:9px;">Escala (Tamaño General)</label><input type="range" id="rng-plans-scale" min="0.7" max="1.2" step="0.05" value="1" oninput="savePlans()"><label style="font-size:9px; margin-top:5px;">Ancho Sección Planes</label><input type="range" id="rng-plans-width" min="70" max="100" value="100" oninput="savePlans()"></div>
+        </div>
+        <div class="color-manager box"><label>Colores</label><div class="color-row"><input type="color" id="cpick" value="#333333"><button class="btn-sm" onclick="addClr()">+ Agregar</button><button class="btn-sm" style="color:red" onclick="delClr()">Borrar</button></div><div style="margin-top:10px; border-top:1px solid #eee; padding-top:10px;"><label style="display:flex; justify-content:space-between; font-size:10px;">Tamaño Circulos: <span id="lbl-size">22px</span></label><input type="range" id="rng-size" min="15" max="35" value="22" oninput="changeSize(this.value)"></div></div>
+    </div>
+
+    <div class="workspace">
+        <div id="h" class="ticket sz-h active"><div class="product-wrap p1-view"></div></div>
+        <div id="ch" class="ticket sz-h"><div class="layout-split-h"><div class="split-col p1-view"></div><div class="split-col p2-view"></div></div></div>
+        <div id="v" class="ticket sz-v"><div class="product-wrap p1-view"></div></div>
+        <div id="cv" class="ticket sz-v"><div class="layout-split-v"><div class="split-row p1-view"></div><div class="split-row p2-view"></div></div></div>
+        <div id="hs" class="ticket sz-hs"><div class="product-wrap p1-view"></div></div>
+    </div>
+
+    <script>
+        const plansDefault = { items: [{ show: true, carrier: 'entel', dev: '', pln: '' }, { show: true, carrier: 'entel', dev: '', pln: '' }, { show: true, carrier: 'claro', dev: '', pln: '' }, { show: true, carrier: 'claro', dev: '', pln: '' }], scale: 1, widthPct: 100 };
+        const emptyProd = { name:'', caps:['','',''], prs:['','',''], ent:['','','',''], plansData: JSON.parse(JSON.stringify(plansDefault)), clrs:[], varSpecs:[{},{},{}], showEnt: false, isEquipo: false, isSAE: false, dotSize: 22, matrixY: 0, matrixPosHS: 0 };
+        const getEmpty = () => JSON.parse(JSON.stringify(emptyProd));
+        const store = { 'h':{1:getEmpty(),2:getEmpty()}, 'v':{1:getEmpty(),2:getEmpty()}, 'ch':{1:getEmpty(),2:getEmpty()}, 'cv':{1:getEmpty(),2:getEmpty()}, 'hs':{1:getEmpty(),2:getEmpty()} };
+        let currentFmt = 'h'; let currentTab = 1; let productDB = {}; 
+        const clp = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', minimumFractionDigits: 0 });
+        const LOGO_ENTEL = 'logoentel.png'; const LOGO_CLARO = 'logoclaro.png'; const LOGO_WOM = 'logowom.png'; const LOGO_MOVISTAR = 'logomovistar.png';
+
+        const colorMap = {
+            "midnight": "#2E3641", "medianoche": "#2E3641", 
+            "starlight": "#F4E8CE", "blanco estrella": "#F4E8CE", 
+            "space gray": "#7D7E80", "gris espacial": "#7D7E80", 
+            "silver": "#E3E4E5", "plata": "#E3E4E5", "plateado": "#E3E4E5", 
+            "gold": "#FFD700", "oro": "#FFD700", "dorado": "#FFD700", 
+            "purple": "#D8BFD8", "purpura": "#D8BFD8", "púrpura": "#D8BFD8", "morado": "#D8BFD8", 
+            "blue": "#4169E1", "azul": "#4169E1", 
+            "pink": "#FFB6C1", "rosa": "#FFB6C1", "rosado": "#FFB6C1", 
+            "green": "#90EE90", "verde": "#90EE90", 
+            "yellow": "#FFFFE0", "amarillo": "#FFFFE0", 
+            "red": "#FF0000", "(product)red": "#FF0000", "rojo": "#FF0000", "product red": "#FF0000",
+            "graphite": "#383838", "grafito": "#383838", 
+            "sierra blue": "#93B8D9", "azul sierra": "#93B8D9", 
+            "alpine green": "#4E5B31", "verde alpino": "#4E5B31", 
+            "deep purple": "#433552", "morado oscuro": "#433552", 
+            "space black": "#1C1C1C", "negro espacial": "#1C1C1C", 
+            "natural titanium": "#B6B5A9", "titanio natural": "#B6B5A9", 
+            "blue titanium": "#2F3542", "titanio azul": "#2F3542", 
+            "white titanium": "#F0F0F0", "titanio blanco": "#F0F0F0", 
+            "black titanium": "#1A1A1A", "titanio negro": "#1A1A1A", 
+            "desert titanium": "#C5B29B", "titanio desierto": "#C5B29B",
+            "teal": "#008080", "verde azulado": "#008080",
+            "ultramarine": "#120A8F", "ultramar": "#120A8F", 
+            "black": "#000000", "negro": "#000000", 
+            "white": "#FFFFFF", "blanco": "#FFFFFF", 
+            "coral": "#FF7F50", "naranja": "#FFA500", "orange": "#FFA500",
+            "celeste": "#87CEEB", "light blue": "#87CEEB",
+            "gris": "#808080", "gray": "#808080", "grey": "#808080",
+            "menta": "#98FF98", "mint": "#98FF98"
+        };
+
+        const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1uuF79JV8xyGG2Yuq3njwje7QzbT_iZBiMgOtiTcdbxQ/export?format=csv&gid=0';
+
+        window.onload = () => { const savedDB = localStorage.getItem('aufbauDB'); if(savedDB) { productDB = JSON.parse(savedDB); updateDBStatus(true); } render(); setFormat('h', document.querySelector('.grid-fmt .active')); };
+        function login() { const pin = document.getElementById('pin').value; if(btoa(pin) === 'MTIzNA==') { document.getElementById('login-screen').style.display='none'; document.getElementById('admin-controls').style.display='none'; } else if(btoa(pin) === 'MDAwMA==') { document.getElementById('login-screen').style.display='none'; document.getElementById('admin-controls').style.display='block'; } }
+        function logout() { document.getElementById('login-screen').style.display = 'flex'; document.getElementById('pin').value = ''; document.getElementById('admin-controls').style.display = 'none'; }
+        document.getElementById('pin').addEventListener('keyup', (e)=>{if(e.key==='Enter')login()});
+        
+        function loadFromGoogleSheets() {
+            const msg = document.getElementById('sync-msg');
+            msg.style.display = 'block';
+
+            const timestamp = new Date().getTime();
+            const urlConCacheBuster = GOOGLE_SHEET_URL + '&nocache=' + timestamp;
+
+            fetch(urlConCacheBuster, { cache: "no-store" })
+            .then(response => {
+                if (!response.ok) throw new Error("Error en la respuesta de red: " + response.status);
+                return response.arrayBuffer();
+            })
+            .then(data => {
+                const u8 = new Uint8Array(data);
+                const bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
+                const combined = new Uint8Array(bom.length + u8.length);
+                combined.set(bom);
+                combined.set(u8, bom.length);
+                
+                const workbook = XLSX.read(combined, {type: 'array'});
+                const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                const jsonData = XLSX.utils.sheet_to_json(sheet, {header: 1});
+                
+                processData(jsonData);
+                
+                msg.style.display = 'none';
+                alert('¡Sincronización Exitosa! Datos actualizados.');
+            })
+            .catch(error => {
+                console.error("Detalle del error:", error);
+                msg.style.display = 'none';
+                alert('Error de conexión. Asegúrate de estar en un servidor https o localhost.');
+            });
+        }
+
+        function processData(jsonData) {
+            const tempDB = {}; 
+            const productOrder = []; 
+            
+            const headers = jsonData[0] || [];
+            
+            let idxFamilia = headers.findIndex(h => h && h.toString().trim().toUpperCase() === 'FAMILIA');
+            if (idxFamilia === -1) idxFamilia = 2; 
+            
+            let idxCap = headers.findIndex(h => h && h.toString().trim().toUpperCase().includes('CAPACIDAD'));
+            if (idxCap === -1) idxCap = 3; 
+            
+            let idxColor = headers.findIndex(h => h && h.toString().trim().toUpperCase() === 'COLOR');
+            if (idxColor === -1) idxColor = 4; 
+
+            let idxCategoria = headers.findIndex(h => h && h.toString().trim().toUpperCase().includes('CATEGOR'));
+            if (idxCategoria === -1) idxCategoria = 14; 
+
+            let idxSAE = headers.findIndex(h => h && h.toString().trim().toUpperCase() === 'SAE');
+            if (idxSAE === -1) idxSAE = 16; 
+            
+            let idxPrice = headers.findIndex(h => h && h.toString().trim().toUpperCase().includes('PRECIO NORMAL'));
+            if (idxPrice === -1) idxPrice = 12; 
+
+            const idxP1C = idxPrice + 1; 
+            const idxP1E = idxPrice + 2; 
+            const idxP2C = idxPrice + 3; 
+            const idxP2E = idxPrice + 4; 
+            const idxP3C = idxPrice + 5; 
+            const idxP3E = idxPrice + 6; 
+            const idxP4C = idxPrice + 7; 
+            const idxP4E = idxPrice + 8; 
+
+            for(let i=1; i<jsonData.length; i++) { 
+                const r = jsonData[i]; 
+                if(!r || r.length <= idxFamilia) continue;
+                
+                const familia = r[idxFamilia]; 
+                if(!familia) continue;
+                
+                const famKey = String(familia).trim();
+                
+                if(!tempDB[famKey]) { 
+                    tempDB[famKey] = { variants: [], colors: new Set(), plans: null, isEquipo: false, isSAE: false }; 
+                    if (!productOrder.includes(famKey)) {
+                        productOrder.push(famKey); 
+                    }
+                }
+
+                const catValue = String(r[idxCategoria] || '').trim().toUpperCase();
+                if (catValue === 'EQUIPO') {
+                    tempDB[famKey].isEquipo = true;
+                }
+
+                const saeValue = String(r[idxSAE] || '').trim().toLowerCase();
+                if (saeValue === 'si') {
+                    tempDB[famKey].isSAE = true;
+                }
+
+                // Carga de Especificaciones por cada precio/variante (R a X)
+                const specsMap = {};
+                for (let col = 17; col <= 23; col++) {
+                    if (r[col] !== undefined && r[col] !== null && String(r[col]).trim() !== '') {
+                        const headerTitle = headers[col] ? String(headers[col]).trim() : `Esp ${col}`;
+                        specsMap[headerTitle] = String(r[col]).trim();
+                    }
+                }
+                
+                const cap = String(r[idxCap] || '').trim(); 
+                const price = r[idxPrice]; 
+                const rawCap = normalizeCapacity(cap);
+                
+                const exists = tempDB[famKey].variants.find(v => v.cap === cap || (v.rawVal === rawCap && v.price === price));
+                if(!exists && (cap || price)) { 
+                    tempDB[famKey].variants.push({ cap: cap, price: price, rawVal: rawCap, specs: specsMap }); 
+                } else if (exists && Object.keys(specsMap).length > 0) {
+                    // Actualiza specs en caso de datos divididos
+                    exists.specs = { ...(exists.specs || {}), ...specsMap };
+                }
+                
+                const colorCell = String(r[idxColor] || '').trim(); 
+                if(colorCell) {
+                    colorCell.split(',').forEach(c => {
+                        const cleanC = c.trim().toLowerCase();
+                        if(cleanC) tempDB[famKey].colors.add(cleanC);
+                    });
+                }
+                
+                if(!tempDB[famKey].plans && r[idxP1C]) { 
+                    tempDB[famKey].plans = { 
+                        p1c: r[idxP1C], p1e: r[idxP1E], 
+                        p2c: r[idxP2C], p2e: r[idxP2E], 
+                        p3c: r[idxP3C], p3e: r[idxP3E], 
+                        p4c: r[idxP4C], p4e: r[idxP4E] 
+                    }; 
+                }
+            }
+            
+            productDB = {}; 
+            productOrder.forEach(key => { 
+                const data = tempDB[key]; 
+                data.variants.sort((a, b) => a.rawVal - b.rawVal); 
+                const colorsArr = Array.from(data.colors); 
+                productDB[key] = { items: data.variants, clrs: colorsArr, plans: data.plans, isEquipo: data.isEquipo, isSAE: data.isSAE }; 
+            });
+            
+            localStorage.setItem('aufbauDB', JSON.stringify(productDB)); 
+            localStorage.setItem('aufbauDBOrder', JSON.stringify(productOrder)); 
+            
+            updateDBStatus(true);
+        }
+
+        function normalizeCapacity(capStr) { let s = capStr.toUpperCase().replace(/\s/g, ''); if(s.includes('TB')) return parseFloat(s) * 1024; if(s.includes('GB')) return parseFloat(s); return 0; }
+        
+        function removeDB() { 
+            productDB = {}; 
+            localStorage.removeItem('aufbauDB'); 
+            localStorage.removeItem('aufbauDBOrder');
+            updateDBStatus(false); 
+        }
+        
+        function updateDBStatus(hasData) { 
+            const sel = document.getElementById('inp-name'); 
+            sel.innerHTML = '<option value="" disabled selected>Seleccione Producto...</option>'; 
+            
+            if(hasData) { 
+                let order = [];
+                try {
+                    const savedOrder = localStorage.getItem('aufbauDBOrder');
+                    if(savedOrder) order = JSON.parse(savedOrder);
+                } catch(e) {}
+                
+                if(!order || order.length === 0) {
+                    order = Object.keys(productDB);
+                }
+
+                order.forEach(m => { 
+                    if(productDB[m]) {
+                        const o = document.createElement('option'); 
+                        o.value = m; 
+                        o.text = m; 
+                        sel.appendChild(o); 
+                    }
+                }); 
+                
+                document.getElementById('btn-delete').style.display='block'; 
+                document.getElementById('db-status').innerText='✓ Base de datos ACTIVA (Nube)'; 
+                document.getElementById('db-status').classList.add('active'); 
+            } else { 
+                document.getElementById('btn-delete').style.display='none'; 
+                document.getElementById('db-status').innerText='Estado: No hay datos cargados'; 
+                document.getElementById('db-status').classList.remove('active'); 
+                sel.innerHTML = '<option value="" disabled selected>Cargue Planilla...</option>'; 
+            } 
+        }
+
+        function fmtExcel(val) { 
+            if (!val) return ''; 
+            let clean = String(val).replace(/[^0-9]/g, ''); 
+            let num = parseInt(clean); 
+            if (isNaN(num)) return ''; 
+            return clp.format(num); 
+        }
+        
+        function onNameInput(ele) { 
+            const val = ele.value; 
+            const entry = productDB[val]; 
+            const d = store[currentFmt][currentTab]; 
+            if(entry) { 
+                for(let i=0; i<3; i++) { 
+                    if(entry.items[i]) { 
+                        document.getElementById(`c${i+1}`).value = entry.items[i].cap; 
+                        document.getElementById(`p${i+1}`).value = entry.items[i].price ? fmtExcel(entry.items[i].price) : ''; 
+                        d.varSpecs[i] = entry.items[i].specs || {};
+                    } else { 
+                        document.getElementById(`c${i+1}`).value = ''; 
+                        document.getElementById(`p${i+1}`).value = ''; 
+                        d.varSpecs[i] = {};
+                    } 
+                } 
+                
+                d.clrs = []; 
+                entry.clrs.forEach(cName => { 
+                    let hex = colorMap[cName] ? colorMap[cName] : cName; 
+                    if(!d.clrs.includes(hex)) { d.clrs.push(hex); }
+                }); 
+                
+                d.isEquipo = entry.isEquipo || false;
+                d.isSAE = entry.isSAE || false;
+
+                if(entry.plans) { 
+                    const p = entry.plans; document.getElementById('ps-p1-pln').value = fmtExcel(p.p1c); document.getElementById('ps-p1-dev').value = fmtExcel(p.p1e); document.getElementById('ps-p2-pln').value = fmtExcel(p.p2c); document.getElementById('ps-p2-dev').value = fmtExcel(p.p2e); document.getElementById('ps-p3-pln').value = fmtExcel(p.p3c); document.getElementById('ps-p3-dev').value = fmtExcel(p.p3e); document.getElementById('ps-p4-pln').value = fmtExcel(p.p4c); document.getElementById('ps-p4-dev').value = fmtExcel(p.p4e); savePlans(); 
+                } 
+            } 
+            const isIphone = val.toLowerCase().includes('iphone'); const hasPlanData = entry && entry.plans && (entry.plans.p1c || entry.plans.p1e); d.showEnt = isIphone && hasPlanData; checkPlansVisibility(); saveAndRender(); 
+        }
+        
+        function checkPlansVisibility() { 
+            const d = store[currentFmt][currentTab]; 
+            const plansBox = document.getElementById('plans-box');
+            const matrixSliderBox = document.getElementById('matrix-slider-box'); 
+            const matrixSliderLbl = document.getElementById('matrix-slider-lbl');
+            const showPlans = (currentFmt === 'h' || currentFmt === 'ch') && d.showEnt;
+            plansBox.style.display = showPlans ? 'block' : 'none';
+            document.getElementById('chk-plans-main').checked = showPlans;
+            if (currentFmt === 'v') {
+                matrixSliderBox.style.display = 'block';
+                matrixSliderLbl.innerText = "Ajuste Vertical Tabla Precios";
+                updateMatrixMax();
+            } else if (currentFmt === 'h' && !showPlans) {
+                matrixSliderBox.style.display = 'block';
+                matrixSliderLbl.innerText = "Posición Vertical Precios";
+                updateMatrixMax();
+            } else {
+                matrixSliderBox.style.display = 'none';
+            }
+        }
+
+        function setFormat(id, btn) { 
+            currentFmt = id; 
+            document.querySelectorAll('.btn-fmt').forEach(b => b.classList.remove('active')); if(btn) btn.classList.add('active'); 
+            document.querySelectorAll('.ticket').forEach(t => t.classList.remove('active')); document.getElementById(id).classList.add('active'); 
+            const tabs = document.getElementById('prod-tabs'); if(id.includes('c')) { tabs.classList.add('show'); } else { tabs.classList.remove('show'); setTab(1, tabs.children[0]); } 
+            document.getElementById('entel-simple-box').style.display = 'none'; 
+            if (id === 'h' || id === 'ch') { if (id === 'ch') { document.getElementById('plan-3-group').style.display = 'none'; document.getElementById('plan-4-group').style.display = 'none'; } else { document.getElementById('plan-3-group').style.display = 'block'; document.getElementById('plan-4-group').style.display = 'block'; } } 
+            document.getElementById('hs-controls').style.display = (id === 'hs') ? 'block' : 'none';
+            const colorMgr = document.querySelector('.color-manager');
+            if (id === 'hs') { colorMgr.style.display = 'none'; } else { colorMgr.style.display = 'flex'; }
+            loadForm(); render(); 
+        }
+        
+        function setTab(idx, btn) { currentTab = idx; document.querySelectorAll('.tab').forEach(t => t.classList.remove('active')); if(btn) btn.classList.add('active'); loadForm(); }
+        function loadForm() { 
+            const d = store[currentFmt][currentTab]; const sel = document.getElementById('inp-name'); sel.value = d.name || '';
+            for(let i=0; i<3; i++) { document.getElementById(`c${i+1}`).value = d.caps[i] || ''; document.getElementById(`p${i+1}`).value = d.prs[i] || ''; } for(let i=0; i<4; i++) document.getElementById(`e${i+1}`).value = d.ent[i] || ''; document.getElementById('chk-ent').checked = d.showEnt; if(d.plansData) { d.plansData.items.forEach((p, i) => { document.getElementById(`ps-p${i+1}-show`).checked = p.show; const radios = document.getElementsByName(`p${i+1}-carrier`); radios.forEach(r => { if(r.value === p.carrier) r.checked = true; }); document.getElementById(`ps-p${i+1}-dev`).value = p.dev; document.getElementById(`ps-p${i+1}-pln`).value = p.pln; }); document.getElementById('rng-plans-scale').value = d.plansData.scale || 1; document.getElementById('rng-plans-width').value = d.plansData.widthPct || 100; document.getElementById('chk-plans-main').checked = d.showEnt; updateAllRadioVisuals(); } document.getElementById('rng-size').value = d.dotSize || 22; document.getElementById('lbl-size').innerText = (d.dotSize || 22) + 'px'; document.getElementById('rng-matrix-y').value = d.matrixY || 0; 
+            document.getElementById('rng-matrix-hs').value = d.matrixPosHS || 0;
+            checkPlansVisibility(); updateMatrixMax(); 
+        }
+        function saveAndRender() { const d = store[currentFmt][currentTab]; d.name = document.getElementById('inp-name').value; for(let i=0; i<3; i++) { d.caps[i] = document.getElementById(`c${i+1}`).value; d.prs[i] = document.getElementById(`p${i+1}`).value; } for(let i=0; i<4; i++) d.ent[i] = document.getElementById(`e${i+1}`).value; render(); }
+        function updateAllRadioVisuals() { for(let i=1; i<=4; i++) { const radios = document.getElementsByName(`p${i}-carrier`); radios.forEach(r => r.parentElement.classList.toggle('selected', r.checked)); } }
+        function savePlans(triggerElement) { const d = store[currentFmt][currentTab]; if (!d.plansData) d.plansData = JSON.parse(JSON.stringify(plansDefault)); if(triggerElement && triggerElement.type === 'radio') updateAllRadioVisuals(); for(let i=0; i<4; i++) { d.plansData.items[i].show = document.getElementById(`ps-p${i+1}-show`).checked; const selectedRadio = document.querySelector(`input[name="p${i+1}-carrier"]:checked`); if(selectedRadio) d.plansData.items[i].carrier = selectedRadio.value; d.plansData.items[i].carrier = selectedRadio.value; d.plansData.items[i].dev = document.getElementById(`ps-p${i+1}-dev`).value; d.plansData.items[i].pln = document.getElementById(`ps-p${i+1}-pln`).value; } d.plansData.scale = document.getElementById('rng-plans-scale').value; d.plansData.widthPct = document.getElementById('rng-plans-width').value; render(); }
+        function toggleEnt() { let isChecked = (currentFmt === 'h' || currentFmt === 'v' || currentFmt === 'ch' || currentFmt === 'cv') ? document.getElementById('chk-plans-main').checked : document.getElementById('chk-ent').checked; store[currentFmt][currentTab].showEnt = isChecked; updateMatrixMax(); render(); }
+        function addClr() { store[currentFmt][currentTab].clrs.push(document.getElementById('cpick').value); render(); }
+        function delClr() { store[currentFmt][currentTab].clrs.pop(); render(); }
+        function changeSize(val) { store[currentFmt][currentTab].dotSize = parseInt(val); document.getElementById('lbl-size').innerText = val + 'px'; render(); }
+        function changeMatrixY(val) { store[currentFmt][currentTab].matrixY = parseInt(val); render(); }
+        function updateMatrixMax() { const d = store[currentFmt][currentTab]; const rng = document.getElementById('rng-matrix-y'); if (currentFmt === 'v' && !d.showEnt) { rng.max = 350; } else { rng.max = 60; if(parseInt(rng.value) > 60) { rng.value = 60; d.matrixY = 60; } } }
+        
+        function changeMatrixPosHS(val) { store[currentFmt][currentTab].matrixPosHS = parseInt(val); render(); }
+
+        function autoFitText() { 
+            const elements = document.querySelectorAll('.active .p-name, .active .box-val, .active .pc-dev-price, .active .pc-pln-price, .active .en-p, .active .m-lbl, .active .m-cap, .active .box-lbl'); 
+            elements.forEach(el => { 
+                el.style.fontSize = ''; 
+                let size = parseFloat(window.getComputedStyle(el).fontSize); 
+                let safety = 0; 
+                while (el.scrollWidth > el.clientWidth && size > 6 && safety < 100) { 
+                    size -= 0.5; el.style.fontSize = size + 'px'; safety++; 
+                } 
+            }); 
+        }
+
+        function render() {
+            const activeTicket = document.getElementById(currentFmt); if(!activeTicket) return;
+            [1, 2].forEach(idx => {
+                const d = store[currentFmt][idx]; const views = activeTicket.querySelectorAll(`.p${idx}-view`);
+                let planesHTML = '';
+                if (currentFmt === 'h' || currentFmt === 'ch') {
+                    const pd = d.plansData || plansDefault; const visiblePlans = pd.items.filter(p => p.show);
+                    let plansToShow = visiblePlans; if(currentFmt === 'ch') { plansToShow = visiblePlans.slice(0, 2); }
+                    let chMargin = 0; if(currentFmt === 'ch') { chMargin = 10; }
+                    planesHTML = `<div class="plans-wrapper" style="margin-top:${currentFmt==='ch'?chMargin:0}px"><div class="plans-container" style="display:${d.showEnt && plansToShow.length > 0 ?'block':'none'}; transform:scale(${pd.scale}); width:${pd.widthPct || 100}%;"><div class="pc-title">¡Contrata tu plan y llévate tu equipo con precios exclusivos!</div><div class="pc-grid">${plansToShow.map(p => { let logoSrc = LOGO_ENTEL; if (p.carrier === 'claro') logoSrc = LOGO_CLARO; else if (p.carrier === 'wom') logoSrc = LOGO_WOM; else if (p.carrier === 'movistar') logoSrc = LOGO_MOVISTAR; return `<div class="pc-col"><img src="${logoSrc}" class="pc-logo-img"><div class="pc-dev-price">${p.dev}</div><div class="pc-label">Valor plan mensual</div><div class="pc-pln-price">${p.pln}</div></div>`; }).join('')}</div></div></div>`;
+                } else if (currentFmt === 'v' || currentFmt === 'cv' || currentFmt === 'hs') { planesHTML = ''; } 
+                else { planesHTML = `<div class="entel-simple" style="display:${d.showEnt?'block':'none'}"><div class="en-tit">¡Contrata tu plan Entel y llévate tu equipo con precios exclusivos!</div><div class="en-flex"><div class="en-logo">e<span>)</span></div><div class="en-grid"><div><div class="en-t">Plan 1</div><div class="en-p">${d.ent[0]}</div><div class="en-s">$17.990</div></div><div><div class="en-t">Plan 2</div><div class="en-p">${d.ent[1]}</div><div class="en-s">$20.990</div></div><div><div class="en-t">Plan 3</div><div class="en-p">${d.ent[2]}</div><div class="en-s">$24.990</div></div><div><div class="en-t">Plan 4</div><div class="en-p">${d.ent[3]}</div><div class="en-s">$29.990</div></div></div></div></div>`; }
+
+                let validIndices = [];
+                for(let i=0; i<3; i++) {
+                    if(d.caps[i] || d.prs[i]) validIndices.push(i);
+                }
+                if (validIndices.length === 0) validIndices = [0]; 
+                let colCount = validIndices.length;
+
+                let capsHTML = ''; let normHTML = ''; let c12HTML = ''; let c24HTML = '';
+                
+                validIndices.forEach((i, count) => {
+                    let cleanPrice = String(d.prs[i] || '').replace(/[^0-9]/g, '');
+                    let numPrice = parseInt(cleanPrice);
+                    let hasValidPrice = !isNaN(numPrice) && cleanPrice !== '';
+
+                    capsHTML += `<div class="m-cap">${d.caps[i] || ''}</div>`;
+                    normHTML += `<div class="box-val out-p${count+1}">${hasValidPrice ? clp.format(numPrice) : '-'}</div>`;
+                    c12HTML += `<div class="box-val v-12">${hasValidPrice ? clp.format(Math.round(numPrice/12)) : '-'}</div>`;
+                    c24HTML += `<div class="box-val v-24">${hasValidPrice ? clp.format(Math.round(numPrice/24)) : '-'}</div>`;
+                });
+
+                // LÓGICA DE SELLOS COMBINADA
+                let sellosHTML = '';
+                if (d.isSAE === true) {
+                    sellosHTML += `<img src="img/subtel.png" style="display: block; max-height: 100%; width: auto; object-fit: contain;">`;
+                }
+                if (d.isEquipo === true) {
+                    sellosHTML += `<img src="img/QRsubtel.png" style="display: block; max-height: 100%; width: auto; object-fit: contain;">`;
+                }
+
+                // LÓGICA DE ESPECIFICACIONES INTEGRADAS EN LA MATRIZ (R a X)
+                let allSpecKeys = [];
+                validIndices.forEach(i => {
+                    if(d.varSpecs && d.varSpecs[i]) {
+                        Object.keys(d.varSpecs[i]).forEach(k => {
+                            if(!allSpecKeys.includes(k)) allSpecKeys.push(k);
+                        });
+                    }
+                });
+
+                let specsGridHTML = '';
+                allSpecKeys.forEach(key => {
+                    // Genera el Título con estilo reducido para no saturar
+                    specsGridHTML += `<div class="box-lbl c-norm spec-lbl">${key}</div>`;
+                    // Genera el valor correspondiente para cada variante con estilo reducido
+                    validIndices.forEach(i => {
+                        const val = (d.varSpecs && d.varSpecs[i] && d.varSpecs[i][key]) ? d.varSpecs[i][key] : '-';
+                        specsGridHTML += `<div class="box-val spec-val">${val}</div>`;
+                    });
+                });
+
+                // INVERSIÓN DE ORDEN: Primero los precios, después las características (specsGridHTML se movió al final de los precios)
+                const commonTPL = `<div class="head"><div class="brand"><div class="logo">AUF<b>BAU</b></div><div class="p-name out-n">${d.name}</div></div><div class="seal">${sellosHTML}</div></div><div class="matrix" style="--col-count: ${colCount}"><div class="m-lbl"></div>${capsHTML}<div class="box-lbl c-norm">Normal</div>${normHTML}<div class="box-lbl c-12">12 cuotas</div>${c12HTML}<div class="box-lbl c-24">24 cuotas</div>${c24HTML}${specsGridHTML}</div>${planesHTML}<div class="foot"><div class="clrs"><div class="cl-lbl">Colores</div><div class="dots out-d"></div></div><div class="imgs-group"><div class="ac-col"><img src="applecare.png" class="ac-img"></div><div class="terms-col"><img src="Terminosycondiciones.png" class="terms-img"></div></div></div>`;
+                
+                views.forEach(view => { 
+                    view.innerHTML = commonTPL; 
+                    const matrix = view.querySelector('.matrix');
+                    if(matrix) matrix.style.marginTop = (d.matrixY || 0) + 'px';
+                    if(currentFmt === 'hs') {
+                        if(matrix) matrix.style.transform = `translateY(${d.matrixPosHS || 0}px)`; 
+                    }
+                    const dots = view.querySelector('.dots'); 
+                    d.clrs.forEach(c => { 
+                        let div = document.createElement('div'); div.className='dot'; div.style.background=c; 
+                        if(currentFmt==='h' || currentFmt === 'v' || currentFmt === 'cv') { div.style.width=(d.dotSize||22)+'px'; div.style.height=(d.dotSize||22)+'px'; }
+                        else if (currentFmt === 'ch') { div.style.width='14px'; div.style.height='14px'; } 
+                        dots.appendChild(div); 
+                    }); 
+                });
+            });
+            autoFitText();
+        }
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aufbau 2026 - V112 Print Ready</title>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+    
+    <style>
+        /* --- 1. VARIABLES --- */
+        :root { 
+            --bg: #222; --panel: #f5f5f7; --accent: #0071e3; 
+            --header-dark: #2c3e50; --blue-12: #4848c4; --green-24: #a9dfbf; 
+            --entel-blue: #0033a0; --entel-orange: #ff7900; --claro-red: #da291c;
+        }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: var(--bg); margin: 0; height: 100vh; display: flex; overflow: hidden; }
+        * { box-sizing: border-box; }
+
+        /* --- 2. SIDEBAR & UI --- */
+        
+        /* LOGIN SCREEN */
+        #login-screen { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: #f3e5f5;
+            z-index: 9999; display: flex; justify-content: center; align-items: center; flex-direction: column; 
+            overflow: hidden;
+        }
+
+        /* --- PARTICULAS CON LOGO --- */
+        .particle {
+            position: absolute;
+            top: 0; left: 0;
+            background-image: url('logo_nu_white.png'); 
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover; 
+            background-color: transparent; 
+            border-radius: 50%; 
+            opacity: 0.9; 
+            z-index: 1; 
+            pointer-events: none;
+            will-change: transform; 
+            box-shadow: 0 4px 15px rgba(106, 27, 154, 0.3);
+        }
+        
+        /* LOCKUP TITLE */
+        .login-bg-title {
+            position: absolute; top: -2%; 
+            font-size: 13vw; 
+            font-weight: 900; 
+            color: #6a1b9a;
+            opacity: 0.12; 
+            z-index: 0;
+            pointer-events: none;
+            white-space: nowrap;
+            display: flex;
+            align-items: center; 
+            justify-content: center;
+            width: 100%;
+            letter-spacing: -0.02em;
+        }
+
+        .vertical-separator { height: 0.65em; width: 0.02em; background-color: currentColor; margin: 0 0.2em; }
+
+        .apr-lockup-stacked {
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            line-height: 1; margin-left: 0.05em; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: #6a1b9a;
+        }
+        .apple-icon { font-size: 0.45em; font-weight: 400; margin-bottom: 0.05em; line-height: 1; }
+        .apr-text-line { font-size: 0.14em; font-weight: 600; letter-spacing: 0.02em; line-height: 1.1; }
+
+        .login-bg-circle {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 85vmin; height: 85vmin; 
+            background-color: rgba(255,255,255,0.4);
+            border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            z-index: 0; pointer-events: none;
+        }
+        
+        .login-card { 
+            position: relative; z-index: 10; 
+            background: rgba(255, 255, 255, 0.85); 
+            backdrop-filter: blur(15px); 
+            padding: 40px; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); 
+            text-align: center; width: 340px; 
+        }
+        .pin-input { padding: 10px; font-size: 24px; letter-spacing: 5px; text-align: center; width: 100%; border: 1px solid #ddd; border-radius: 8px; margin: 20px 0; outline: none; background: rgba(255,255,255,0.8); }
+        .btn-login { background: black; color: white; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; border: none; cursor: pointer; transition: background 0.2s; }
+        .btn-login:hover { background: #333; }
+
+        /* SIDEBAR */
+        .sidebar { width: 400px; background: var(--panel); border-right: 1px solid #ccc; display: flex; flex-direction: column; padding: 20px; overflow-y: auto; flex-shrink: 0; }
+        .sidebar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid #ccc; padding-bottom: 10px; }
+        .btn-logout { background: #333; color: white; border: none; padding: 5px 10px; border-radius: 4px; font-size: 10px; cursor: pointer; }
+        .btn-logout:hover { background: #000; }
+        
+        /* DB CONTROLS */
+        .db-controls { display: none; background: #fff3e0; padding: 10px; border-radius: 8px; border: 1px solid #ffe0b2; margin-bottom: 10px; }
+        .btn-sync { background: #e3f2fd; border: 1px solid #2196f3; color: #0d47a1; padding: 10px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer; text-align: center; width: 100%; display: block; margin-bottom: 5px; transition: background 0.2s; }
+        .btn-sync:hover { background: #bbdefb; }
+        .btn-delete-db { background: #ffebee; border: 1px solid #ffcdd2; color: #c62828; padding: 8px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer; text-align: center; width: 100%; display: none; margin-top: 5px; }
+        .db-status { font-size: 10px; text-align: center; color: #666; margin-bottom: 5px;} .db-status.active { color: #2e7d32; font-weight: bold; }
+        .sync-msg { font-size: 10px; color: #0071e3; text-align: center; display: none; margin-top: 5px; }
+
+        /* FORMAT GRID */
+        .grid-fmt { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .btn-fmt { padding: 12px; background: white; border: 1px solid #ccc; border-radius: 6px; font-size: 11px; cursor: pointer; text-align: center; }
+        .btn-fmt.active { background: var(--accent); color: white; border-color: var(--accent); font-weight: bold; }
+        
+        /* BOTÓN DE IMPRIMIR */
+        .btn-print { width: 100%; padding: 10px; margin-top: 8px; background: #333; color: white; border: none; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .btn-print:hover { background: #000; }
+
+        .tabs { display: none; margin-bottom: 15px; border-bottom: 1px solid #ccc; } .tabs.show { display: flex; }
+        .tab { flex: 1; padding: 8px; background: #eee; border: none; cursor: pointer; font-size: 11px; margin-right: 2px; border-radius: 6px 6px 0 0; }
+        .tab.active { background: white; font-weight: bold; border: 1px solid #ccc; border-bottom: 2px solid white; margin-bottom: -1px; }
+        .box { background: white; padding: 12px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 10px; }
+        .row { display: flex; gap: 5px; margin-bottom: 5px; } .col { flex: 1; }
+        label { display: block; font-size: 9px; font-weight: bold; color: #555; margin-bottom: 2px; }
+        
+        input[type="text"], input[type="tel"], select { width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 4px; font-size: 11px; }
+        input.locked-input { background-color: #f0f0f0; color: #666; border-color: #e0e0e0; cursor: not-allowed; font-style: italic; }
+
+        .color-manager { display: flex; flex-direction: column; gap: 8px; background: white; padding: 10px; border-radius: 8px; }
+        .color-row { display: flex; gap: 10px; align-items: center; }
+        input[type="color"] { width: 30px; height: 30px; border: none; padding: 0; cursor: pointer; background: none; }
+        .btn-sm { padding: 5px 10px; background: #eee; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; font-size: 10px; }
+        input[type=range] { -webkit-appearance: none; width: 100%; margin: 5px 0; }
+        input[type=range]:focus { outline: none; }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: #ddd; border-radius: 2px; }
+        input[type=range]::-webkit-slider-thumb { height: 16px; width: 16px; border-radius: 50%; background: var(--accent); cursor: pointer; -webkit-appearance: none; margin-top: -6px; }
+
+        /* PLANS SETTINGS */
+        .plans-settings { display: none; }
+        .plans-settings.show { display: block; }
+        .ps-group { border-bottom: 1px solid #eee; padding-bottom: 8px; margin-bottom: 8px; }
+        .ps-header { display: flex; justify-content: space-between; align-items: center; background: #eee; padding: 2px 5px; border-radius: 3px; margin-bottom: 4px; }
+        .ps-title { font-size: 10px; font-weight: bold; color: #333; }
+        .ps-chk-lbl { font-size: 9px; display: flex; align-items: center; gap: 4px; cursor: pointer; }
+        .carrier-select-group { display: flex; gap: 5px; margin-bottom: 4px; }
+        .radio-img { cursor: pointer; border: 2px solid transparent; border-radius: 4px; padding: 2px; transition: 0.2s; background: #f9f9f9; flex: 1; display: flex; justify-content: center; align-items: center; height: 28px; }
+        .radio-img.selected { border-color: var(--accent); background: #e3f2fd; }
+        .radio-img img { max-height: 100%; max-width: 100%; width: auto; height: auto; display: block; object-fit: contain; }
+        .radio-img input { display: none; } 
+
+        /* WORKSPACE & TICKETS */
+        .workspace { flex: 1; display: flex; justify-content: center; align-items: center; background: #333; overflow: auto; padding: 40px; }
+        .ticket { background: white; box-shadow: 0 0 60px rgba(0,0,0,0.5); display: none; box-sizing: border-box; overflow: hidden; position: relative; }
+        .ticket.active { display: block; }
+        .sz-h { width: 15cm; height: 12cm; padding: 25px 30px; }
+        .sz-v { width: 12cm; height: 15cm; padding: 30px 25px; }
+        .sz-hs { width: 12cm; height: 8cm; padding: 15px 20px; }
+
+        .layout-split-h { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; height: 100%; }
+        .split-col { border-right: 1px dashed #ccc; padding-right: 10px; display: flex; flex-direction: column; overflow: hidden; position: relative; }
+        .split-col:last-child { border: none; padding-right: 0; padding-left: 10px; }
+        .layout-split-v { display: grid; grid-template-rows: 1fr 1fr; gap: 15px; height: 100%; }
+        .split-row { border-bottom: 1px dashed #ccc; padding-bottom: 8px; display: flex; flex-direction: column; overflow: hidden; position: relative; }
+        .split-row:last-child { border: none; padding-bottom: 0; padding-top: 8px; }
+
+        /* DISEÑO GENERAL TICKET */
+        .product-wrap { height: 100%; display: flex; flex-direction: column; justify-content: flex-start; position: relative; }
+        .head { display: flex; justify-content: space-between; align-items: flex-start; height: 50px; width: 100%; flex-shrink: 0; gap: 10px; }
+        
+        .brand { display: flex; flex-direction: column; flex: 1; min-width: 0; max-width: calc(100% - 210px); overflow: hidden; }
+        .logo { font-size: 22px; letter-spacing: 2px; line-height: 1; } .logo b { font-weight: 900; }
+        .p-name { font-size: 36px; font-weight: 800; line-height: 1; margin: 0; letter-spacing: -1px; white-space: nowrap; overflow: hidden; text-overflow: clip; width: 100%; }
+        
+        /* SEAL */
+        .seal { height: 55px; max-width: 200px; display: flex; align-items: flex-start; justify-content: flex-end; flex-shrink: 0; gap: 8px; } 
+        .seal img { max-height: 100%; max-width: 100%; width: auto; height: auto; object-fit: contain; }
+        
         /* SCALABLE AREA FOR VERTICAL AUTO-FIT */
         .scalable-area { flex: 1; min-height: 0; display: flex; flex-direction: column; width: 100%; transform-origin: top center; position: relative; z-index: 10; }
 
